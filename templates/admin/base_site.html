@@ -1,0 +1,53 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+<div id="site-name">
+  <a href="{% url 'admin:index' %}">
+    <span style="display:inline-flex;align-items:center;gap:8px;">
+      <span style="display:inline-flex;height:26px;width:26px;align-items:center;justify-content:center;border-radius:8px;background:rgba(255,255,255,0.18);font-weight:800;">&#8366;</span>
+      {{ site_header|default:_('Django administration') }}
+    </span>
+  </a>
+</div>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+  :root {
+    --primary: #4f46e5;
+    --primary-fg: #fff;
+    --body-quiet-color: #64748b;
+    --link-fg: #4f46e5;
+    --link-hover-color: #4338ca;
+    --link-selected-fg: #4338ca;
+  }
+  #header {
+    background: linear-gradient(135deg, #4f46e5 0%, #a21caf 100%);
+    color: #fff;
+  }
+  #header a:link, #header a:visited { color: #fff; }
+  #branding h1, #branding h1 a:link, #branding h1 a:visited { color: #fff; font-weight: 800; }
+  div.breadcrumbs { background: #4338ca; color: #e0e7ff; }
+  div.breadcrumbs a { color: #fff; }
+  .module h2, .module caption, .inline-group h2 {
+    background: #4f46e5;
+  }
+  .button, input[type=submit], input[type=button], .submit-row input, a.button {
+    background: #4f46e5; border-radius: 8px;
+  }
+  .button:hover, input[type=submit]:hover, .button:active, input[type=submit]:active {
+    background: #4338ca;
+  }
+  .button.default, input[type=submit].default, .submit-row input.default {
+    background: #4338ca;
+  }
+  a:link, a:visited { color: #4f46e5; }
+  .selector-chosen h2, .calendar caption, .calendarbox h2 { background: #4f46e5; }
+</style>
+{% endblock %}

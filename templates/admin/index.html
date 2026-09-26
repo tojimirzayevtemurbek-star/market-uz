@@ -1,0 +1,56 @@
+{% extends "admin/index.html" %}
+{% load i18n %}
+
+{% block content %}
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px;">
+
+  <div style="background:linear-gradient(135deg,#4f46e5,#818cf8);color:#fff;border-radius:14px;padding:18px 20px;box-shadow:0 8px 20px -8px rgba(79,70,229,.5);">
+    <div style="font-size:13px;opacity:.85;font-weight:600;">Do'konchilar (ro'yxatdan o'tganlar)</div>
+    <div style="font-size:30px;font-weight:800;margin-top:6px;">{{ dokonchilar_soni }}</div>
+  </div>
+
+  <div style="background:linear-gradient(135deg,#059669,#34d399);color:#fff;border-radius:14px;padding:18px 20px;box-shadow:0 8px 20px -8px rgba(5,150,105,.5);">
+    <div style="font-size:13px;opacity:.85;font-weight:600;">Faol do'konchilar</div>
+    <div style="font-size:30px;font-weight:800;margin-top:6px;">{{ faol_dokonchilar_soni }}</div>
+  </div>
+
+  <div style="background:linear-gradient(135deg,#a21caf,#e879f9);color:#fff;border-radius:14px;padding:18px 20px;box-shadow:0 8px 20px -8px rgba(162,28,175,.5);">
+    <div style="font-size:13px;opacity:.85;font-weight:600;">Jami mijozlar (barcha do'konlarda)</div>
+    <div style="font-size:30px;font-weight:800;margin-top:6px;">{{ jami_mijozlar_soni }}</div>
+  </div>
+
+  <div style="background:linear-gradient(135deg,#e11d48,#fb7185);color:#fff;border-radius:14px;padding:18px 20px;box-shadow:0 8px 20px -8px rgba(225,29,72,.5);">
+    <div style="font-size:13px;opacity:.85;font-weight:600;">Jami to'lanmagan qarz</div>
+    <div style="font-size:24px;font-weight:800;margin-top:6px;">{{ jami_qarz_summasi|floatformat:0 }} so'm</div>
+  </div>
+
+</div>
+
+{% if songgi_royxatdan_otganlar %}
+<div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:0;margin-bottom:24px;overflow:hidden;">
+  <div style="padding:14px 18px;border-bottom:1px solid #e5e7eb;font-weight:700;color:#111827;">So'nggi ro'yxatdan o'tgan do'konchilar</div>
+  <table style="width:100%;border-collapse:collapse;">
+    <thead>
+      <tr style="text-align:left;color:#6b7280;font-size:12px;text-transform:uppercase;">
+        <th style="padding:10px 18px;">Login</th>
+        <th style="padding:10px 18px;">Do'kon nomi</th>
+        <th style="padding:10px 18px;">Ro'yxatdan o'tgan sana</th>
+        <th style="padding:10px 18px;">Oxirgi kirgan</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in songgi_royxatdan_otganlar %}
+      <tr style="border-top:1px solid #f1f5f9;">
+        <td style="padding:10px 18px;font-weight:600;"><a href="{% url 'admin:auth_user_change' u.pk %}">{{ u.username }}</a></td>
+        <td style="padding:10px 18px;color:#475569;">{{ u.profile.store_name|default:"—" }}</td>
+        <td style="padding:10px 18px;color:#475569;">{{ u.date_joined|date:"d.m.Y H:i" }}</td>
+        <td style="padding:10px 18px;color:#475569;">{{ u.last_login|date:"d.m.Y H:i"|default:"Hali kirmagan" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+{{ block.super }}
+{% endblock %}

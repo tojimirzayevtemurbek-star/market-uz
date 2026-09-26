@@ -1,0 +1,51 @@
+{% extends 'core/base.html' %}
+{% block title %}Sozlamalar — Qarz Daftar{% endblock %}
+{% block content %}
+
+<div class="max-w-lg mx-auto">
+  <h1 class="text-2xl font-extrabold text-slate-900 mb-6">Sozlamalar</h1>
+
+  <div class="bg-white rounded-2xl shadow-soft border border-slate-100 p-6 sm:p-8 mb-6">
+    <div class="flex items-center gap-3 mb-5">
+      <span class="h-12 w-12 rounded-2xl bg-brand-50 flex items-center justify-center">
+        <img src="https://img.icons8.com/ios-filled/50/4f46e5/user.png" class="h-6 w-6" alt="" onerror="this.style.display='none'">
+      </span>
+      <div>
+        <p class="font-bold text-slate-800">Profil</p>
+        <p class="text-xs text-slate-400">{{ user.username }}</p>
+      </div>
+    </div>
+    <form method="post" class="space-y-4">
+      {% csrf_token %}
+      {% for field in form %}
+        <div>
+          <label class="block text-sm font-semibold text-slate-600 mb-1.5">{{ field.label }}</label>
+          {{ field }}
+          {% for error in field.errors %}
+            <p class="text-rose-500 text-xs mt-1 font-medium">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endfor %}
+      <button class="w-full rounded-xl bg-brand-600 py-3 font-bold text-white shadow-soft hover:bg-brand-700 transition">Saqlash</button>
+    </form>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-soft border border-slate-100 divide-y divide-slate-100 overflow-hidden">
+    <a href="{% url 'password_change' %}" class="flex items-center justify-between px-5 py-4 hover:bg-slate-50 transition">
+      <span class="flex items-center gap-3">
+        <img src="https://img.icons8.com/ios-filled/50/4f46e5/key.png" class="h-5 w-5" alt="" onerror="this.style.display='none'">
+        <span class="font-semibold text-slate-700">Parolni o'zgartirish</span>
+      </span>
+      <img src="https://img.icons8.com/ios-filled/50/cbd5e1/forward-arrow.png" class="h-4 w-4" alt="" onerror="this.style.display='none'">
+    </a>
+    <form action="{% url 'logout' %}" method="post">
+      {% csrf_token %}
+      <button class="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-rose-50 transition">
+        <img src="https://img.icons8.com/ios-filled/50/e11d48/logout-rounded.png" class="h-5 w-5" alt="" onerror="this.style.display='none'">
+        <span class="font-semibold text-rose-500">Chiqish</span>
+      </button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

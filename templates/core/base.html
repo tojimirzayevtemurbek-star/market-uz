@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Qarz Daftar |T| {% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { sans: ['Manrope', 'sans-serif'] },
+        colors: {
+          brand: {
+            50: '#eef2ff', 100: '#e0e7ff', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca',
+          }
+        },
+        boxShadow: {
+          soft: '0 10px 30px -10px rgba(79, 70, 229, 0.15)',
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { font-family: 'Manrope', sans-serif; }
+  .bg-mesh {
+    background: radial-gradient(circle at 10% 0%, #eef2ff 0%, transparent 45%),
+                radial-gradient(circle at 90% 10%, #fdf4ff 0%, transparent 40%),
+                #f8fafc;
+  }
+</style>
+</head>
+<body class="bg-mesh min-h-screen text-slate-800">
+
+{% if user.is_authenticated %}
+<nav class="sticky top-0 z-40 border-b border-slate-200/70 bg-white/80 backdrop-blur">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+    <a href="{% url 'dashboard' %}" class="flex items-center gap-2 font-extrabold text-lg text-slate-900">
+      <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-fuchsia-500 text-white shadow-soft">₮</span>
+      Qarz&nbsp;Daftar
+    </a>
+    <div class="hidden sm:flex items-center gap-1">
+      <a href="{% url 'dashboard' %}" class="px-4 py-2 rounded-lg text-sm font-semibold {% if request.resolver_match.url_name == 'dashboard' %}bg-brand-50 text-brand-700{% else %}text-slate-500 hover:text-slate-800{% endif %}">Bosh sahifa</a>
+      <a href="{% url 'customer_list' %}" class="px-4 py-2 rounded-lg text-sm font-semibold {% if 'customer' in request.resolver_match.url_name %}bg-brand-50 text-brand-700{% else %}text-slate-500 hover:text-slate-800{% endif %}">Qarzdorlar</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="{% url 'customer_add' %}" class="hidden sm:inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2 text-sm font-bold text-white shadow-soft hover:bg-brand-700 transition">
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/plus-math.png" class="h-3.5 w-3.5" alt="" onerror="this.remove()">
+        Yangi qarz
+      </a>
+      <a href="{% url 'settings' %}" class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition {% if request.resolver_match.url_name == 'settings' or request.resolver_match.url_name == 'password_change' %}bg-slate-100 text-slate-700{% endif %}" title="Sozlamalar">
+        <img src="https://img.icons8.com/ios-filled/50/64748b/settings.png" class="h-5 w-5" alt="Sozlamalar" onerror="this.style.display='none'">
+      </a>
+    </div>
+  </div>
+  <div class="sm:hidden flex border-t border-slate-100">
+    <a href="{% url 'dashboard' %}" class="flex-1 text-center py-2.5 text-sm font-semibold {% if request.resolver_match.url_name == 'dashboard' %}text-brand-700{% else %}text-slate-500{% endif %}">Bosh sahifa</a>
+    <a href="{% url 'customer_list' %}" class="flex-1 text-center py-2.5 text-sm font-semibold {% if 'customer' in request.resolver_match.url_name %}text-brand-700{% else %}text-slate-500{% endif %}">Qarzdorlar</a>
+    <a href="{% url 'customer_add' %}" class="flex-1 flex items-center justify-center gap-1 py-2.5 text-sm font-semibold text-brand-700">
+      <img src="https://img.icons8.com/ios-filled/50/4338ca/plus-math.png" class="h-3.5 w-3.5" alt="" onerror="this.remove()">
+      Qo'shish
+    </a>
+    <a href="{% url 'settings' %}" class="flex-1 flex items-center justify-center py-2.5 {% if request.resolver_match.url_name == 'settings' or request.resolver_match.url_name == 'password_change' %}text-brand-700{% else %}text-slate-500{% endif %}">
+      <img src="https://img.icons8.com/ios-filled/50/64748b/settings.png" class="h-5 w-5" alt="Sozlamalar" onerror="this.style.display='none'">
+    </a>
+  </div>
+</nav>
+{% endif %}
+
+<main class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+  {% if messages %}
+    <div class="mb-6 space-y-2">
+      {% for message in messages %}
+        <div class="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  {% block content %}{% endblock %}
+</main>
+
+</body>
+</html>

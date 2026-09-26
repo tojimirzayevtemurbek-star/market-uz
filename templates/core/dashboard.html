@@ -1,0 +1,65 @@
+{% extends 'core/base.html' %}
+{% block title %}Bosh sahifa — Qarz Daftar{% endblock %}
+{% block content %}
+
+<div class="mb-8">
+  <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 flex items-center gap-2">
+    {% if user.profile.store_name %}{{ user.profile.store_name }}{% else %}Salom, {{ user.username }}{% endif %}
+    <img src="https://img.icons8.com/emoji/48/waving-hand-emoji.png" class="h-7 w-7" alt="" onerror="this.remove()">
+  </h1>
+  <p class="text-slate-500 mt-1">Do'koningizdagi barcha qarzlar bir joyda.</p>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+  <div class="rounded-2xl bg-gradient-to-br from-rose-500 to-orange-400 p-6 text-white shadow-soft">
+    <p class="text-white/80 text-sm font-semibold">To'lanmagan qarzlar</p>
+    <p class="text-3xl font-extrabold mt-2">{{ total_unpaid|floatformat:0 }} so'm</p>
+  </div>
+  <div class="rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-400 p-6 text-white shadow-soft">
+    <p class="text-white/80 text-sm font-semibold">To'langan qarzlar</p>
+    <p class="text-3xl font-extrabold mt-2">{{ total_paid|floatformat:0 }} so'm</p>
+  </div>
+  <div class="rounded-2xl bg-white border border-slate-100 p-6 shadow-soft">
+    <p class="text-slate-400 text-sm font-semibold">Qarzdorlar soni</p>
+    <p class="text-3xl font-extrabold mt-2 text-slate-900">{{ debtor_count }} / {{ customer_count }}</p>
+  </div>
+</div>
+
+<div class="flex items-center justify-between mb-4">
+  <h2 class="text-lg font-bold text-slate-900">So'nggi harakatlar</h2>
+  <a href="{% url 'customer_list' %}" class="inline-flex items-center gap-1 text-sm font-bold text-brand-600 hover:underline">
+    Barcha qarzdorlar
+    <img src="https://img.icons8.com/ios-filled/50/4f46e5/forward-arrow.png" class="h-3 w-3" alt="" onerror="this.remove()">
+  </a>
+</div>
+
+<div class="bg-white rounded-2xl shadow-soft border border-slate-100 divide-y divide-slate-100 overflow-hidden">
+  {% for debt in recent_debts %}
+    <a href="{% url 'customer_detail' debt.customer.pk %}" class="flex items-center justify-between px-5 py-4 hover:bg-slate-50 transition">
+      <div class="flex items-center gap-3">
+        <span class="h-10 w-10 rounded-full bg-brand-50 text-brand-700 flex items-center justify-center font-bold">
+          {{ debt.customer.first_name|first|upper }}
+        </span>
+        <div>
+          <p class="font-bold text-slate-800">{{ debt.customer.full_name }}</p>
+          <p class="text-xs text-slate-400">{{ debt.description|default:"Qarz" }} · {{ debt.created_at|date:"d.m.Y H:i" }}</p>
+        </div>
+      </div>
+      <div class="text-right">
+        {% if debt.customer.has_debt %}
+          <p class="font-extrabold text-rose-500">{{ debt.customer.total_unpaid|floatformat:0 }} so'm</p>
+          <p class="text-xs font-semibold text-orange-400">Qarzdor</p>
+        {% else %}
+          <p class="font-extrabold text-emerald-500">0 so'm</p>
+          <p class="text-xs font-semibold text-emerald-400">Tekis</p>
+        {% endif %}
+      </div>
+    </a>
+  {% empty %}
+    <div class="px-5 py-10 text-center text-slate-400">
+      Hali qarzlar yo'q. <a href="{% url 'customer_add' %}" class="text-brand-600 font-bold hover:underline">Birinchi qarzni qo'shing</a>.
+    </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
