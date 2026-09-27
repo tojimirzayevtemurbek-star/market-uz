@@ -13,4 +13,6 @@ urlpatterns = [
     path('qarz/<int:pk>/ochirish/', views.debt_delete_view, name='debt_delete'),
     path('sozlamalar/', views.settings_view, name='settings'),
     path('sozlamalar/parol/', views.password_change_view, name='password_change'),
+    path('manifest.json', views.manifest_view, name='manifest'),
+    path('sw.js', views.service_worker_view, name='service_worker'),
 ]
