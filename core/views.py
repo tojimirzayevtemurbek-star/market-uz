@@ -5,6 +5,11 @@ from django.db.models import Sum, Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.http import JsonResponse
+from django.http import HttpResponse
+
+def service_worker_view(request):
+    sw_code = "/* Service Worker */\nself.addEventListener('install', (e) => { e.waitUntil(self.skipWaiting()); });\nself.addEventListener('activate', (e) => { e.waitUntil(self.clients.claim()); });"
+    return HttpResponse(sw_code, content_type="application/javascript")
 
 
 
