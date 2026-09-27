@@ -4,6 +4,9 @@ from django.contrib import messages
 from django.db.models import Sum, Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
+from django.http import JsonResponse
+
+
 
 from .forms import (
     RegisterForm, LoginForm, CustomerForm, DebtForm,
@@ -12,6 +15,16 @@ from .forms import (
 from .models import Customer, Debt, Profile
 from .search_utils import fuzzy_contains
 
+def manifest_view(request):
+    data = {
+        "name": "Qarz Daftar",
+        "short_name": "QarzDaftar",
+        "start_url": "/",
+        "display": "standalone",
+        "background_color": "#ffffff",
+        "theme_color": "#000000"
+    }
+    return JsonResponse(data)
 
 def register_view(request):
     if request.user.is_authenticated:
